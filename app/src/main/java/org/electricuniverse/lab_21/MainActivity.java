@@ -25,6 +25,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
+
+
+import static org.electricuniverse.lab_21.R.drawable.alice;
+
+
 public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, DatePickerDialog.OnDateSetListener
 {
 
@@ -38,8 +43,9 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     private Integer oldValue = 50;
 
     private GestureDetectorCompat mDetector;
-   // private MovieData movieData = new MovieData();
+    private MovieData movieData = new MovieData();
     private ImageView imageView;
+
     private int index = 0;
 
 
@@ -50,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         /**
          * View object initialization
          * */
@@ -59,18 +64,18 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         toggleButton = findViewById(R.id.disable_snack);
         seekBar.setOnSeekBarChangeListener(this);
 
-       // mDetector = new GestureDetectorCompat(this, new MyGestureListener());
-        findViewById(R.id.imageView);
-        //imageView.setImageResource(R.drawable.avatar);
-        //imageView.setOnTouchListener(new View.OnTouchListener()
-//        {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event)
-//            {
-//                mDetector.onTouchEvent(event);
-//                return true;
-//            }
-//        });
+        mDetector = new GestureDetectorCompat(this, new MyGestureListener());
+        imageView = findViewById(R.id.imageView);
+        imageView.setImageResource(R.drawable.avatar);
+        imageView.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                mDetector.onTouchEvent(event);
+               return true;
+            }
+        });
 
 
     }
@@ -116,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
      * Part 2:
      * createToast Method
      * */
-    public void createToast()
+    public void createToast(View view)
     {
         /**
          * get a reference to the radio button
@@ -126,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         /**
          * Create and show a simple toast of the rb_simple
          * */
-        Toast.makeText(this, "Simple Toast MEssage", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Simple Toast Message", Toast.LENGTH_SHORT).show();
 
         /**
          * If the custom radio button is checked, inflate layout and show in toast message
@@ -197,30 +202,34 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         timePickerDialog.show();
     }
 
+
     /**
      * Part: 4
      * */
 
 
-//    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-//
-//        @Override
-//        public boolean onDoubleTap(MotionEvent e) {
-//            index++;
-//            imageView.setImageResource((Integer) movieData.getItem(index).get("image"));
-//            Snackbar snackbar = Snackbar.make(imageView, "Image Changed", Snackbar.LENGTH_LONG)
-//                    .setAction("UNDO", new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            index--;
-//                            imageView.setImageResource((Integer) movieData.getItem(index).get("image"));
-//                        }
-//                    });
-//            snackbar.show();
-//            return super.onDoubleTap(e);
-//
-//        }
-//    }
+    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            index++;
+            imageView.setImageResource((Integer) movieData.getItem(index).get("image"));
+            Snackbar snackbar = Snackbar.make(imageView, "Image Changed", Snackbar.LENGTH_LONG)
+                    .setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            index--;
+                            imageView.setImageResource((Integer) movieData.getItem(index).get("image"));
+                        }
+                    });
+            snackbar.show();
+            return super.onDoubleTap(e);
+
+        }
+    }
+
+
+
 }
 
 
